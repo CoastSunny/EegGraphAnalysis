@@ -1,0 +1,3 @@
+In the data folder you should have a eeg resting state data.
+In the script we use a .set file.
+The file shouldn't be epoched!
