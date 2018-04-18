@@ -16,7 +16,7 @@ import autoreject
 sbj = "IE008_RC" #Name of the subject
 #Defining the path for our eeg data
 raw_folder = 'D:/user/yourpath/'
-raw_fname = sbj + "_RESTINGEC" #The subject name should be followed by a label (EO/EC)S
+raw_fname = sbj + "_RESTINGEC" #The subject name should be followed by a label (EO/EC)
 title = 'Subject: ' + raw_fname
 raw_file_ext = '.set'
 raw_path = raw_folder + raw_fname + raw_file_ext
