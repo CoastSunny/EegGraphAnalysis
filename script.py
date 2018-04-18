@@ -6,7 +6,6 @@ import os
 import subprocess
 import matplotlib.pyplot as plt
 %gui qt #This step is needed if using Ipython
-#import plotly.plotly as py
 import numpy as np
 import ast
 from mne.connectivity import spectral_connectivity
@@ -14,10 +13,10 @@ import networkx
 import autoreject
 
 #Change it later
-sbj = "IE008_RC"
+sbj = "IE008_RC" #Name of the subject
 #Defining the path for our eeg data
-raw_folder = 'D:/MATLAB/datos nuevos/resting/P1 IMPORT/EC/'
-raw_fname = sbj + "_RESTINGEC"
+raw_folder = 'D:/user/yourpath/'
+raw_fname = sbj + "_RESTINGEC" #The subject name should be followed by a label (EO/EC)S
 title = 'Subject: ' + raw_fname
 raw_file_ext = '.set'
 raw_path = raw_folder + raw_fname + raw_file_ext
@@ -29,10 +28,10 @@ bad_color = 'red'
 #Filtering
 raw.filter(1., None, fir_design='firwin')
 raw.filter(None, 30., fir_design='firwin')
-raw.notch_filter(50)  
+raw.notch_filter(50) #Don't know whether this is necessary or not
 
 #raw.plot(color=color,n_channels=n_channels,bad_color=bad_color,title=title)
-#I define emg/eog channels
+#I define eog channels: Geodesic sensor net 2.1, 128 electrodes
 raw.set_channel_types({'E125': 'eog', 'E126': 'eog', 'E127': 'eog','E128': 'eog'})
 
 #We check if the data have already been referenced. If so, channels should be 130 (128 eeg + reference + stim)
