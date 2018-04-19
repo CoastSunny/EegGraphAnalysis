@@ -9,8 +9,6 @@ Then, a graph is built and described using classical measures. For unbiased grou
 <img src="https://raw.githubusercontent.com/Davi93/EegGraphAnalysis/master/images/sbj_1.png" height="200" width="200">
 <img src="https://raw.githubusercontent.com/Davi93/EegGraphAnalysis/master/images/sbj_2.png" height="200" width="200">
 
-![alt-text-1](https://raw.githubusercontent.com/Davi93/EegGraphAnalysis/master/images/sbj_1.png "title-1") ![alt-text-2](https://raw.githubusercontent.com/Davi93/EegGraphAnalysis/master/images/sbj_2.png "title-2")
-
 
 -----
 - Graph analysis of functional brain networks: practical issues in translational neuroscience; Vellani et al. (2014)
