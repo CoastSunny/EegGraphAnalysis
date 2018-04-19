@@ -6,8 +6,8 @@ Then, a graph is built and described using classical measures. For unbiased grou
 
 
 
-<img src="https://raw.githubusercontent.com/Davi93/EegGraphAnalysis/master/images/sbj_1.png" height="100" width="100">
-
+<img src="https://raw.githubusercontent.com/Davi93/EegGraphAnalysis/master/images/sbj_1.png" height="200" width="200">
+<img src="https://raw.githubusercontent.com/Davi93/EegGraphAnalysis/master/images/sbj_2.png" height="200" width="200">
 
 
 
