@@ -6,6 +6,14 @@ Then, a graph is built and described using classical measures. For unbiased grou
 
 
 
+
+![alt text](https://raw.githubusercontent.com/Davi93/EegGraphAnalysis/master/images/sbj_1.png)
+
+
+
+
+
+
 -----
 - Graph analysis of functional brain networks: practical issues in translational neuroscience; Vellani et al. (2014)
 - The trees and the forest: Characterization of complex brain networks with minimum spanning trees; Stam et al. (2014)
