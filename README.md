@@ -1,4 +1,4 @@
-# Eeg Graph Analysis
+# EEG Graph Analysis
 Graph analysis of resting state eeg data using MNE and Networkx
 
 Resting state data are cleaned and a connectivity matrix is created using the phase lag index (PLI).
