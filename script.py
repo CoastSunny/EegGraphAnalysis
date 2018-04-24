@@ -1,63 +1,42 @@
-#Resting state Functional Connectivity analysis - Davide Aloi
+# Resting state Functional Connectivity analysis - Davide Aloi
 import mne
-from mne import io
 from mne import Epochs
 import os
-import subprocess
 import matplotlib.pyplot as plt
-%gui qt #This step is needed if using Ipython
 import numpy as np
-import ast
 from mne.connectivity import spectral_connectivity
-import networkx
-import autoreject
+from autoreject import get_rejection_threshold
 
-#Change it later
-sbj = "IE008_RC" #Name of the subject
-#Defining the path for our eeg data
-raw_folder = 'D:/user/yourpath/'
-raw_fname = sbj + "_RESTINGEC" #The subject name should be followed by a label (EO/EC)
+
+sbj = "IE008_RC"  # Name of the subject
+raw_folder = 'data'
+raw_fname = sbj + "_RESTINGEC"  # subject name should be followed by EO or EC
 title = 'Subject: ' + raw_fname
 raw_file_ext = '.set'
-raw_path = raw_folder + raw_fname + raw_file_ext
-#Loading the data
-raw = mne.io.read_raw_eeglab(raw_path, preload=True)
-color = dict(eeg='darkblue',eog='purple',stim='yellow')
+raw_path = os.path.join(raw_folder, raw_fname + raw_file_ext)
+
+# Loading the data
+raw = mne.io.read_raw_eeglab(raw_path, eog=["E125", "E126", "E127", "E128"],
+                             preload=True)
+color = dict(eeg='darkblue', eog='purple', stim='yellow')
 n_channels = 128
 bad_color = 'red'
-#Filtering
+
+# Filtering
 raw.filter(1., None, fir_design='firwin')
 raw.filter(None, 30., fir_design='firwin')
-raw.notch_filter(50) #Don't know whether this is necessary or not
 
-#raw.plot(color=color,n_channels=n_channels,bad_color=bad_color,title=title)
-#I define eog channels: Geodesic sensor net 2.1, 128 electrodes
-raw.set_channel_types({'E125': 'eog', 'E126': 'eog', 'E127': 'eog','E128': 'eog'})
+raw.plot(color=color, n_channels=n_channels, bad_color=bad_color, title=title)
 
-#We check if the data have already been referenced. If so, channels should be 130 (128 eeg + reference + stim)
-#Nb reference must be set after bad channels rejection!
-###I DON'T KNOW HOW THIS SHOULD BE DONE OR IF THIS IS NECESSARY
-if len(raw.info['chs']) == 130:
-	ref_channels=[]
-	print ('A reference is already present.')
-else:
-	print('Data need to be referenced')
-	raw.set_eeg_reference('average', projection=False)  # set EEG average reference	
-	ref_channels=['Cz']
-	#raw.apply_proj() #To apply the projection
+raw.set_eeg_reference('average', projection=False)  # set EEG average reference
 
-########
-picks = mne.pick_types(raw.info, eeg=True, eog=True, emg=False, stim=False, exclude='bads')
-		
-#After inspection you can set the bad channels and create the epochs.
-#Then we use autoreject to remove epochs with high pick-to-pick amplitude.
+# After inspection you can set the bad channels and create the epochs.
+# Then we use autoreject to remove epochs with high pick-to-pick amplitude.
 events = mne.make_fixed_length_events(raw, id=1, duration=2)
-raw.info['projs'] = list()  
-epochs = Epochs(raw, events, tmin=0., tmax=2, baseline=(None,0), detrend=1,preload=True)
+raw.info['projs'] = []
+epochs = Epochs(raw, events, tmin=0, tmax=2, baseline=(None, 0), detrend=1)
 
-
-#Rejection threshold
-from autoreject import get_rejection_threshold  # noqa
+# Rejection threshold
 reject = get_rejection_threshold(epochs, decim=1)
 
 #####
@@ -82,7 +61,7 @@ max_epochs = 45 #End at epoch n.
 con, freqs, times, n_epochs, n_tapers = spectral_connectivity(
     epochs[min_epochs:max_epochs], method='pli', mode='multitaper', sfreq=sfreq, fmin=fmin, fmax=fmax,
     faverage=True, tmin=tmin, mt_adaptive=False, n_jobs=1)
-	
+
 # the epochs contain an EOG channel, which we remove now
 ch_names = epochs.ch_names
 idx = [ch_names.index(name) for name in ch_names if name.startswith('E')]
@@ -90,7 +69,7 @@ con = con[idx][:, idx]
 # con is a 3D array where the last dimension is size one since we averaged
 # over frequencies in a single band. Here we make it 2D
 con = con[:, :, 0]
-	
+
 # Plot the sensor locations
 sens_loc = [raw.info['chs'][picks[i]]['loc'][:3] for i in idx]
 sens_loc = np.array(sens_loc)
@@ -123,13 +102,13 @@ import networkx as nx
 G=nx.Graph()
 for x in range(0, len(idx)):
 	G.add_node(x,pos=(new_loc[x,0],new_loc[x,1])) #I add the nodes to the graph (positions must be re-referenced)
-	
+
 pos=nx.get_node_attributes(G,'pos')
 con_nodes_new = np.array(con_nodes)
 
 for x in range(0,len(con_nodes)):
 	G.add_edge(con_nodes_new[x,0],con_nodes_new[x,1], weight=con_val[x],alpha=con_val[x])
-	
+
 edges,weights = zip(*nx.get_edge_attributes(G,'weight').items())
 
 plt.figure(figsize=(5, 5))
@@ -143,8 +122,8 @@ for i in range(0,len(pos)):
 	pos_x = pos[i][0]
 	pos_y = pos[i][1]
 	upd = {i:[pos_x+0.03,pos_y+0.01]}
-	label_pos.update(upd)	
-	
+	label_pos.update(upd)
+
 #Drawing the network!
 nx.draw(G,pos,node_size=32,node_color='black',edge_color=weights,edge_cmap=plt.cm.Reds) #check how to add edge_vmin properly
 #nx.draw(G,pos,node_size=32,node_color='black') #Here we don't consider the threshold
@@ -166,7 +145,7 @@ for i in range(0,len(pos_c)):
 	pos_x = pos_c[i][0]
 	pos_y = pos_c[i][1]
 	upd = {i:[pos_x+0.03,pos_y+0.01]}
-	label_pos_c.update(upd)	
+	label_pos_c.update(upd)
 
 nx.draw(sm_w,pos_c,node_size=32,node_color='black',edge_color=weights,edge_cmap=plt.cm.Reds) #check how to add edge_vmin properly
 nx.draw_networkx_labels(sm_w,label_pos_c,labels,font_size=7,with_labels=True,font_color='grey')
