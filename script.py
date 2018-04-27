@@ -1,4 +1,4 @@
-# Resting state Functional Connectivity analysis - Davide Aloi
+# Resting state Functional Connectivity analysis at the sensor level - Davide Aloi
 import mne
 from mne import Epochs
 import os
@@ -58,23 +58,23 @@ eog_inds, scores = ica.find_bads_eog(eog_epochs)  # find via correlation
 ica.plot_scores(scores, exclude=eog_inds)  # look at r scores of components
 ica.exclude + = [] # Here you can add the Ica components you found by visual inspection
 ica.exclude.extend(eog_inds) # We exclude components found by automatic artifact detection
-raw_corrected = raw.copy()
-ica.apply(raw_corrected) # We apply ica 
+raw_backup = raw.copy() #We create a raw backup
+ica.apply(raw) # We apply ica
 
-#Now we re-create epochs excluding bad epochs 
-epochs = Epochs(raw_corrected, events, tmin=0, tmax=2, baseline=(None, 0), detrend=1, reject_by_annotation=True, reject = reject, preload=True)
+#Now we re-create epochs excluding bad epochs
+epochs = Epochs(raw, events, tmin=0, tmax=2, baseline=(None, 0), detrend=1, reject_by_annotation=True, reject = reject, preload=True)
 epochs.drop_bad()
 epochs.interpolate_bads(reset_bads=False,verbose=False)  #We interpolate bad channels
 mne.rename_channels(epochs.info,  {'E125' : '_E125','E126':'_E126','E127':'_E127','E128':'_E128'})
-picks = mne.pick_types(raw_corrected.info, eeg=True, eog=False, stim=False, include = [], exclude=[]) #We want to select all the eeg channels
+picks = mne.pick_types(raw.info, eeg=True, eog=False, stim=False, include = [], exclude=[]) #We want to select all the eeg channels
 
 #Connectivity
 from scipy import linalg
 fmin, fmax = 7.5, 12.5 #theta(3,8) alpha band (7.5,12.5) beta (13,30)
 sfreq = raw.info['sfreq']  # the sampling frequency
 tmin = 0.0  # exclude the baseline period
-min_epochs = 15 #Start from epoch n.
-max_epochs = 45 #End at epoch n.
+min_epochs = 5 #Start from epoch n.
+max_epochs = 35 #End at epoch n.
 con, freqs, times, n_epochs, n_tapers = spectral_connectivity(
     epochs[min_epochs:max_epochs], method='pli', mode='multitaper', sfreq=sfreq, fmin=fmin, fmax=fmax,
     faverage=True, tmin=tmin, mt_adaptive=False, n_jobs=1)
@@ -88,14 +88,14 @@ con = con[idx][:, idx]
 con = con[:, :, 0]
 
 # Plot the sensor locations
-sens_loc = [raw_corrected.info['chs'][picks[i]]['loc'][:3] for i in idx]
+sens_loc = [raw.info['chs'][picks[i]]['loc'][:3] for i in idx]
 sens_loc = np.array(sens_loc)
 #Layout
 layout = mne.channels.find_layout(raw.info, exclude=[])
 new_loc = layout.pos
 # Get the strongest connections
-n_con = 130 # show up to 20 connections THIS SHOULD BE CHECKED.
-min_dist = 4  # exclude sensors that are less than 4cm apart THIS SHOULD BE CHECKED
+n_con = 200 # show up to n_con connections THIS SHOULD BE CHECKED.
+min_dist = 5  # exclude sensors that are less than 4cm apart THIS SHOULD BE CHECKED
 threshold = np.sort(con, axis=None)[-n_con]
 ii, jj = np.where(con >= threshold)
 
