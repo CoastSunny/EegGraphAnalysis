@@ -62,10 +62,11 @@ raw_corrected = raw.copy()
 ica.apply(raw_corrected) # We apply ica 
 
 #Now we re-create epochs excluding bad epochs 
-raw_corrected.interpolate_bads(reset_bads=False,verbose=False)  #We interpolate bad channels
-epochs = Epochs(raw_corrected, events, tmin=0, tmax=2, baseline=(None, 0), detrend=1, reject_by_annotation=True, reject = reject)
+epochs = Epochs(raw_corrected, events, tmin=0, tmax=2, baseline=(None, 0), detrend=1, reject_by_annotation=True, reject = reject, preload=True)
 epochs.drop_bad()
+epochs.interpolate_bads(reset_bads=False,verbose=False)  #We interpolate bad channels
 mne.rename_channels(epochs.info,  {'E125' : '_E125','E126':'_E126','E127':'_E127','E128':'_E128'})
+picks = mne.pick_types(raw_corrected.info, eeg=True, eog=False, stim=False, include = [], exclude=[]) #We want to select all the eeg channels
 
 #Connectivity
 from scipy import linalg
@@ -87,10 +88,10 @@ con = con[idx][:, idx]
 con = con[:, :, 0]
 
 # Plot the sensor locations
-sens_loc = [raw.info['chs'][picks[i]]['loc'][:3] for i in idx]
+sens_loc = [raw_corrected.info['chs'][picks[i]]['loc'][:3] for i in idx]
 sens_loc = np.array(sens_loc)
 #Layout
-layout = mne.channels.find_layout(raw.info)
+layout = mne.channels.find_layout(raw.info, exclude=[])
 new_loc = layout.pos
 # Get the strongest connections
 n_con = 130 # show up to 20 connections THIS SHOULD BE CHECKED.
