@@ -9,7 +9,7 @@ from autoreject import get_rejection_threshold
 
 
 sbj = "IE008_RC"  # Name of the subject
-raw_folder = 'data'
+raw_folder = 'D:/MATLAB/datos nuevos/resting/P1 IMPORT/EC/'
 raw_fname = sbj + "_RESTINGEC"  # subject name should be followed by EO or EC
 title = 'Subject: ' + raw_fname
 raw_file_ext = '.set'
@@ -26,29 +26,45 @@ bad_color = 'red'
 raw.filter(1., None, fir_design='firwin')
 raw.filter(None, 30., fir_design='firwin')
 
-raw.plot(color=color, n_channels=n_channels, bad_color=bad_color, title=title)
-
 raw.set_eeg_reference('average', projection=False)  # set EEG average reference
 
-# After inspection you can set the bad channels and create the epochs.
-# Then we use autoreject to remove epochs with high pick-to-pick amplitude.
+raw.plot(color=color, n_channels=n_channels, bad_color=bad_color, title=title)
+
+#Bad channels
+raw.info['bads'] += [] #or do it using the raw.plot function.
+
+# Epochs creation. We reject epochs based on previously made annotations
 events = mne.make_fixed_length_events(raw, id=1, duration=2)
 raw.info['projs'] = []
-epochs = Epochs(raw, events, tmin=0, tmax=2, baseline=(None, 0), detrend=1)
+epochs = Epochs(raw, events, tmin=0, tmax=2, baseline=(None, 0), detrend=1, reject_by_annotation=True)
 
-# Rejection threshold
+# Rejection threshold. We will pass this threshold to ICA
 reject = get_rejection_threshold(epochs, decim=1)
 
-#####
-#Here ICA should be implemented
+# ICA for eye movements and eye blinks detection
+raw_tmp = raw.copy()
+picks = mne.pick_types(raw_tmp.info, eeg=True, eog=True, stim=False, exclude='bads')
+ica = mne.preprocessing.ICA(method="extended-infomax", random_state=1, n_components = 25)
+ica.fit(raw_tmp, picks=picks, reject=reject)
+ica.plot_components(picks=range(25), inst=raw_tmp) #Visual inspection
+ica.plot_sources(inst=raw_tmp)
 
+# Advanced artifact detection
+from mne.preprocessing import create_eog_epochs
+eog_average = create_eog_epochs(raw_tmp, reject=reject,
+                                picks=picks).average()
+eog_epochs = create_eog_epochs(raw_tmp, reject=reject)  # get single EOG trials
+eog_inds, scores = ica.find_bads_eog(eog_epochs)  # find via correlation
+ica.plot_scores(scores, exclude=eog_inds)  # look at r scores of components
+ica.exclude + = [] # Here you can add the Ica components you found by visual inspection
+ica.exclude.extend(eog_inds) # We exclude components found by automatic artifact detection
+raw_corrected = raw.copy()
+ica.apply(raw_corrected) # We apply ica 
 
-#####
-
-#Now we re-create epochs excluding eog channels
-events = mne.make_fixed_length_events(raw, id=1, duration=2)
-picks = mne.pick_types(raw.info, eeg=True, eog=True, emg=False, stim=False, exclude='bads')
-epochs = Epochs(raw, events, tmin=0., tmax=2, baseline=(None,0), detrend=1, preload=True, picks = picks, reject=reject)
+#Now we re-create epochs excluding bad epochs 
+raw_corrected.interpolate_bads(reset_bads=False,verbose=False)  #We interpolate bad channels
+epochs = Epochs(raw_corrected, events, tmin=0, tmax=2, baseline=(None, 0), detrend=1, reject_by_annotation=True, reject = reject)
+epochs.drop_bad()
 mne.rename_channels(epochs.info,  {'E125' : '_E125','E126':'_E126','E127':'_E127','E128':'_E128'})
 
 #Connectivity
