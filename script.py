@@ -95,7 +95,7 @@ layout = mne.channels.find_layout(raw.info, exclude=[])
 new_loc = layout.pos
 # Get the strongest connections
 n_con = 200 # show up to n_con connections THIS SHOULD BE CHECKED.
-min_dist = 5  # exclude sensors that are less than 4cm apart THIS SHOULD BE CHECKED
+min_dist = 3  # exclude sensors that are less than 4cm apart THIS SHOULD BE CHECKED
 threshold = np.sort(con, axis=None)[-n_con]
 ii, jj = np.where(con >= threshold)
 
@@ -131,7 +131,7 @@ edges,weights = zip(*nx.get_edge_attributes(G,'weight').items())
 plt.figure(figsize=(5, 5))
 labels = {} #I create a dictionary with the labels
 for x in range (0,len(idx)):
-	labels[x] =  idx[x]
+	labels[x] =  idx[x] + 1 #Needed to show the correct electrode label
 
 #Label positions needs to be changed in order to avoid the overlap with electrodes
 label_pos = {k:v for k,v in pos.items()}
