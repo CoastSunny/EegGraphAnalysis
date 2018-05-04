@@ -74,7 +74,7 @@ fmin, fmax = 7.5, 12.5 #theta(3,8) alpha band (7.5,12.5) beta (13,30)
 sfreq = raw.info['sfreq']  # the sampling frequency
 tmin = 0.0  # exclude the baseline period
 min_epochs = 5 #Start from epoch n.
-max_epochs = 35 #End at epoch n.
+max_epochs = 25 #End at epoch n.
 con, freqs, times, n_epochs, n_tapers = spectral_connectivity(
     epochs[min_epochs:max_epochs], method='pli', mode='multitaper', sfreq=sfreq, fmin=fmin, fmax=fmax,
     faverage=True, tmin=tmin, mt_adaptive=False, n_jobs=1)
