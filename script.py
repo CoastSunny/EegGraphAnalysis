@@ -7,20 +7,29 @@ import numpy as np
 from mne.connectivity import spectral_connectivity
 from autoreject import get_rejection_threshold
 
-
+### Loading the data ###
 sbj = "IE008_RC"  # Name of the subject
 raw_folder = 'D:/MATLAB/datos nuevos/resting/P1 IMPORT/EC/'
-raw_fname = sbj + "_RESTINGEC"  # subject name should be followed by EO or EC
+raw_fname = sbj + "_RESTINGEC"  # Subject name should be followed by EO or EC
 title = 'Subject: ' + raw_fname
 raw_file_ext = '.set'
 raw_path = os.path.join(raw_folder, raw_fname + raw_file_ext)
 
+### Global Variables ###
+n_channels = 128
+bad_color = 'red'
+color = dict(eeg='darkblue', eog='purple', stim='yellow')
+tmin = 0.0  # exclude the baseline period
+fmin, fmax = 7.5, 12.5 #theta(3,8) alpha band (7.5,12.5) beta (13,30)
+min_epochs = 5 #Start from epoch n.
+max_epochs = 25 #End at epoch n.
+# Get the strongest connections
+n_con = 200 # show up to n_con connections THIS SHOULD BE CHECKED.
+min_dist = 3  # exclude sensors that are less than 4cm apart THIS SHOULD BE CHECKED
+
 # Loading the data
 raw = mne.io.read_raw_eeglab(raw_path, eog=["E125", "E126", "E127", "E128"],
                              preload=True)
-color = dict(eeg='darkblue', eog='purple', stim='yellow')
-n_channels = 128
-bad_color = 'red'
 
 # Filtering
 raw.filter(1., None, fir_design='firwin')
@@ -70,11 +79,7 @@ picks = mne.pick_types(raw.info, eeg=True, eog=False, stim=False, include = [], 
 
 #Connectivity
 from scipy import linalg
-fmin, fmax = 7.5, 12.5 #theta(3,8) alpha band (7.5,12.5) beta (13,30)
 sfreq = raw.info['sfreq']  # the sampling frequency
-tmin = 0.0  # exclude the baseline period
-min_epochs = 5 #Start from epoch n.
-max_epochs = 25 #End at epoch n.
 con, freqs, times, n_epochs, n_tapers = spectral_connectivity(
     epochs[min_epochs:max_epochs], method='pli', mode='multitaper', sfreq=sfreq, fmin=fmin, fmax=fmax,
     faverage=True, tmin=tmin, mt_adaptive=False, n_jobs=1)
@@ -93,9 +98,6 @@ sens_loc = np.array(sens_loc)
 #Layout
 layout = mne.channels.find_layout(raw.info, exclude=[])
 new_loc = layout.pos
-# Get the strongest connections
-n_con = 200 # show up to n_con connections THIS SHOULD BE CHECKED.
-min_dist = 3  # exclude sensors that are less than 4cm apart THIS SHOULD BE CHECKED
 threshold = np.sort(con, axis=None)[-n_con]
 ii, jj = np.where(con >= threshold)
 
