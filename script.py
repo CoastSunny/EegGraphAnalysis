@@ -8,7 +8,7 @@ from mne.connectivity import spectral_connectivity
 from autoreject import get_rejection_threshold
 
 ### Loading the data ###
-sbj = "IE008_RC"  # Name of the subject
+sbj = "IE007_VL"  # Name of the subject
 raw_folder = 'D:/MATLAB/datos nuevos/resting/P1 IMPORT/EC/'
 raw_fname = sbj + "_RESTINGEC"  # Subject name should be followed by EO or EC
 title = 'Subject: ' + raw_fname
@@ -65,7 +65,7 @@ eog_average = create_eog_epochs(raw_tmp, reject=reject,
 eog_epochs = create_eog_epochs(raw_tmp, reject=reject)  # get single EOG trials
 eog_inds, scores = ica.find_bads_eog(eog_epochs)  # find via correlation
 ica.plot_scores(scores, exclude=eog_inds)  # look at r scores of components
-ica.exclude + = [] # Here you can add the Ica components you found by visual inspection
+ica.exclude += [] # Here you can add the Ica components you found by visual inspection
 ica.exclude.extend(eog_inds) # We exclude components found by automatic artifact detection
 raw_backup = raw.copy() #We create a raw backup
 ica.apply(raw) # We apply ica
@@ -179,9 +179,9 @@ for i in range(0,len(weights)):
 	w = 1/weights[i] #Stronger connection will have a shortest distance
 	new_weights.append(w)
 new_weights = tuple(new_weights) #convert the list to tuple
-
-T=nx.minimum_spanning_tree(G,new_weights) #Minimum spanning tree
-
+#This part does not show the real MST, I have no idea why. I solved it using the maximum spanning tree
+#T=nx.minimum_spanning_tree(G,new_weights) #Minimum spanning tree
+T = nx.maximum_spanning_tree(G) #This should do extactly the same thing as using w = 1/w as it maximise the distance
 nx.draw(T,pos,node_size=32,node_color='black',edge_color='red')
 nx.draw_networkx_labels(T,label_pos,labels,font_size=7,with_labels=True,font_color='grey')
 plt.show()
