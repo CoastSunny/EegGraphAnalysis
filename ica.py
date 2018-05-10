@@ -1,37 +1,4 @@
-# Preprocessing
-import mne
-from mne import Epochs
-import os
-
-### Loading the data ###
-sbj = "IE008_RC"  # Name of the subject
-raw_folder = 'D:/MATLAB/datos nuevos/resting/P1 IMPORT/EC/'
-raw_fname = sbj + "_RESTINGEC"  # Subject name should be followed by EO or EC
-title = 'Subject: ' + raw_fname
-raw_file_ext = '.set'
-raw_path = os.path.join(raw_folder, raw_fname + raw_file_ext)
-
-### Global Variables ###
-n_channels = 128
-bad_color = 'red'
-color = dict(eeg='darkblue', eog='purple', stim='yellow')
-tmin = 0.0  # exclude the baseline period
-
-# Loading the data
-raw = mne.io.read_raw_eeglab(raw_path, eog=["E125", "E126", "E127", "E128"],
-                             preload=True)
-
-# Filtering
-raw.filter(1., None, fir_design='firwin')
-raw.filter(None, 30., fir_design='firwin')
-
-raw.set_eeg_reference('average', projection=False)  # set EEG average reference
-
-#Remove bad segments, mark bad channels
-raw.plot(color=color, n_channels=n_channels, bad_color=bad_color, title=title)
-
-#Bad channels
-raw.info['bads'] += [] #or do it using the raw.plot function.
+# After visual rejection of bad segments Ica is used to remove artifacts
 
 # Epochs creation. We reject epochs based on previously made annotations
 events = mne.make_fixed_length_events(raw, id=1, duration=2)
@@ -56,14 +23,25 @@ eog_average = create_eog_epochs(raw_tmp, reject=reject,
 eog_epochs = create_eog_epochs(raw_tmp, reject=reject)  # get single EOG trials
 eog_inds, scores = ica.find_bads_eog(eog_epochs)  # find via correlation
 ica.plot_scores(scores, exclude=eog_inds)  # look at r scores of components
-ica.exclude + = [] # Here you can add the Ica components you found by visual inspection
+
+# After visual and automatic inspection you can remove those components
+ica.exclude += [] # Here you can add the Ica components you found by visual inspection
 ica.exclude.extend(eog_inds) # We exclude components found by automatic artifact detection
 raw_backup = raw.copy() #We create a raw backup
 ica.apply(raw) # We apply ica
 
-#Now we re-create epochs excluding bad epochs
+#Now we export the cleaned data
+cleaned_file = os.path.join(clean_folder, raw_fname + '.fif')
+raw.save(cleaned_file, overwrite=True)
+#We also save the epochs
+events = mne.make_fixed_length_events(raw, id=1, duration=2)
+raw.info['projs'] = []
+#Now we re-create epochs excluding bad epochs(
 epochs = Epochs(raw, events, tmin=0, tmax=2, baseline=(None, 0), detrend=1, reject_by_annotation=True, reject = reject, preload=True)
 epochs.drop_bad()
 epochs.interpolate_bads(reset_bads=False,verbose=False)  #We interpolate bad channels
 mne.rename_channels(epochs.info,  {'E125' : '_E125','E126':'_E126','E127':'_E127','E128':'_E128'})
 picks = mne.pick_types(raw.info, eeg=True, eog=False, stim=False, include = [], exclude=[]) #We want to select all the eeg channels
+
+cleaned_epochs= os.path.join(epochs_folder, raw_fname + '.fif')
+epochs.save(cleaned_epochs)
