@@ -11,6 +11,7 @@ raw_path = os.path.join(raw_folder, raw_fname + raw_file_ext)
 
 ### Global Variables ###
 n_channels = 128
+n_channels_used = 124
 bad_color = 'red'
 color = dict(eeg='darkblue', eog='purple', stim='yellow')
 tmin = 0.0  # exclude the baseline period
