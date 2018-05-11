@@ -1,25 +1,17 @@
 # Resting state Functional Connectivity analysis at the sensor level - Davide Aloi
-import mne
-from mne import Epochs
-import os
-import matplotlib.pyplot as plt
-import numpy as np
-from mne.connectivity import spectral_connectivity
-from autoreject import get_rejection_threshold
-
 
 ### Global Variables ###
 fmin, fmax = 7.5, 12.5 #theta(3,8) alpha band (7.5,12.5) beta (13,30)
 min_epochs = 5 #Start from epoch n.
 max_epochs = 25 #End at epoch n.
 # Get the strongest connections
-n_con = 200 # show up to n_con connections THIS SHOULD BE CHECKED.
+n_con = 124*123 # show up to n_con connections THIS SHOULD BE CHECKED.
 min_dist = 3  # exclude sensors that are less than 4cm apart THIS SHOULD BE CHECKED
 method = 'pli' # Method used to calculate the connectivity matrix
 
 #Connectivity
 from scipy import linalg
-sfreq = raw.info['sfreq']  # the sampling frequency
+sfreq = epochs.info['sfreq']  # the sampling frequency
 con, freqs, times, n_epochs, n_tapers = spectral_connectivity(
     epochs[min_epochs:max_epochs], method=method, mode='multitaper', sfreq=sfreq, fmin=fmin, fmax=fmax,
     faverage=True, tmin=tmin, mt_adaptive=False, n_jobs=1)
@@ -34,10 +26,10 @@ con = con[idx][:, idx]
 con = con[:, :, 0] #This connectivity matrix can also be visualized
 
 # Plot the sensor locations
-sens_loc = [raw.info['chs'][picks[i]]['loc'][:3] for i in idx]
+sens_loc = [epochs.info['chs'][picks[i]]['loc'][:3] for i in idx]
 sens_loc = np.array(sens_loc)
 #Layout
-layout = mne.channels.find_layout(raw.info, exclude=[])
+layout = mne.channels.find_layout(epochs.info, exclude=[])
 new_loc = layout.pos
 threshold = np.sort(con, axis=None)[-n_con]
 ii, jj = np.where(con >= threshold)
@@ -55,9 +47,6 @@ con_val = np.array(con_val)
 
 
 #Plotting the data
-import plotly.plotly as py
-from plotly.graph_objs import *
-import networkx as nx
 
 G=nx.Graph()
 for x in range(0, len(idx)):
@@ -84,6 +73,8 @@ for i in range(0,len(pos)):
 	upd = {i:[pos_x+0.03,pos_y+0.01]}
 	label_pos.update(upd)
 
+
+
 #Drawing the network!
 nx.draw(G,pos,node_size=32,node_color='black',edge_color=weights,edge_cmap=plt.cm.Reds) #check how to add edge_vmin properly
 #nx.draw(G,pos,node_size=32,node_color='black') #Here we don't consider the threshold
@@ -94,7 +85,7 @@ plt.show()
 centrality = nx.degree_centrality(G)
 
 #You can graphically show which are the central nodes
-nx.draw(G,pos,node_color=range(124),node_size=32,cmap=plt.cm.Blues)
+#nx.draw(G,pos,node_color=range(124),node_size=32,cmap=plt.cm.Blues)
 
 ####Just an example, many measures can be added (path length, betweenness and so forth)
 
@@ -131,4 +122,12 @@ nx.draw(T,pos,node_size=32,node_color='black',edge_color='red')
 nx.draw_networkx_labels(T,label_pos,labels,font_size=7,with_labels=True,font_color='grey')
 plt.show()
 
-#Minimum spanning tree as spring
+#Minimum spanning tree Metrics
+#LEAF node
+leaf_n = 0
+for x in range(0,123):
+    if len(T.edges(x)) == 1:
+        leaf_n += 1
+    print(T.edges(x))
+
+print ('Number of leaf nodes: ', leaf_n)

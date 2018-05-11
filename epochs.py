@@ -1,6 +1,3 @@
-#Firstly we load the cleaned data
-#cleaned_file = os.path.join(clean_folder, raw_fname + '.fif')
-#raw = mne.io.read_raw_fif(cleaned_file, preload = True)
-
-# We load the epochs
-epochs mne.io.read_raw_fif(cleaned_file, preload = True)
+cleaned_epochs= os.path.join(epochs_folder, raw_fname + '.fif')
+epochs = mne.read_epochs(cleaned_epochs, proj=True, preload=True, verbose=None)
+picks = mne.pick_types(epochs.info, eeg=True, eog=False, stim=False, include = [], exclude=[]) #We want to select all the eeg channels

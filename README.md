@@ -16,6 +16,7 @@ Then, a graph is built and described using classical measures. For unbiased grou
 -----
 
 Steps for the one subject analysis
+0) Global variables: info about the subject
 1) Filtering, re-referencing and visual inspection
 2) ICA
 3) Epoching

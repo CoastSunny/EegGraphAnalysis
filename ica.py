@@ -33,7 +33,10 @@ ica.apply(raw) # We apply ica
 #Now we export the cleaned data
 cleaned_file = os.path.join(clean_folder, raw_fname + '.fif')
 raw.save(cleaned_file, overwrite=True)
-#We also save the epochs
+
+#Firstly we load the cleaned data
+cleaned_file = os.path.join(clean_folder, raw_fname + '.fif')
+raw = mne.io.read_raw_fif(cleaned_file)
 events = mne.make_fixed_length_events(raw, id=1, duration=2)
 raw.info['projs'] = []
 #Now we re-create epochs excluding bad epochs(
