@@ -1,6 +1,10 @@
 # Resting state Functional Connectivity analysis at the sensor level - Davide Aloi
 ### Global Variables ###
-fmin, fmax = 7.5, 12.5 #theta(3,8) alpha band (7.5,12.5) beta (13,30)
+delta = 1-4
+alpha = 8,13
+theta = 4,8
+beta = 13,30
+fmin, fmax = alpha
 min_epochs = 5 #Start from epoch n.
 max_epochs = 25 #End at epoch n.
 # Get the strongest connections

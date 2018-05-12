@@ -57,8 +57,14 @@ nx.draw_networkx_labels(T,label_pos,labels,font_size=7,with_labels=True,font_col
 plt.show()
 
 # Minimum spanning tree Metrics
-# Metrics list
+#We plot the adjacency matrix
+from networkx import adjacency_matrix
+A = nx.adjacency_matrix(T)
+plot_adjacency_matrix(A)
 
+# We can plot the degree distribution 
+plot_degree_distribution(T)
+# Metrics list
 # Degree, leaf number, betweenness centrality (BC), eccentricity,
 # diameter, hierarchy (Th), and degree correlation (R).
 from networkx import diameter, eccentricity, betweenness_centrality
