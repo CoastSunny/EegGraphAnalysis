@@ -10,8 +10,8 @@ raw.filter(None, 30., fir_design='firwin')
 
 raw.set_eeg_reference('average', projection=False)  # set EEG average reference
 
-#Remove bad segments, mark bad channels with visual inspection
+# Remove bad segments, mark bad channels with visual inspection
 raw.plot(color=color, n_channels=n_channels, bad_color=bad_color, title=title)
 
-#Bad channels
+# Bad channels
 raw.info['bads'] += [] #or do it using the raw.plot function.
