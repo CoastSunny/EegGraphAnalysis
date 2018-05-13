@@ -17,6 +17,7 @@ def plot_adjacency_matrix(A):
     import matplotlib.pyplot as plt
     A = A.todense()
     plt.imshow(A);
+    plt.title('Adjacency matrix')
     plt.xlabel('Channels')
     plt.show()
     return
