@@ -1,6 +1,6 @@
 # Resting state Functional Connectivity analysis at the sensor level - Davide Aloi
 ### Global Variables ###
-delta = 1-4
+delta = 1,4
 alpha = 8,13
 theta = 4,8
 beta = 13,30
