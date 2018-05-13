@@ -5,6 +5,7 @@ alpha = 8,13
 theta = 4,8
 beta = 13,30
 fmin, fmax = alpha
+bands = fmin,fmax
 min_epochs = 5 #Start from epoch n.
 max_epochs = 25 #End at epoch n.
 # Get the strongest connections

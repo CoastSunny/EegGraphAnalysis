@@ -110,6 +110,7 @@ plot_adjacency_matrix(A)
 plot_degree_distribution(T)
 
 print('Number of nodes: ', len(T.nodes), ' Number of edges: ', len(T.edges))
+print ('Averaged PLI:', mean_connectivity)
 print ('Number of leaf nodes: ', leaf_n)
 print ('Leaf fraction: ', leaf_fraction)
 print ('Max degree:', max_degree)
