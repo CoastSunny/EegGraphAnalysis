@@ -16,6 +16,7 @@ Preprocessing
 - Apply ICA
 - Create the epochs and perform a last visual inspection to exclude bad epochs.
 - Save the epochs 
+
 Connectivity matrix
 - Connectivity matrix calculation using the PLI method.
 - Create a graph using those values. Given that I am using a 128-electrodes system, I decided to remove connections of electrodes with a distance below 3cm. That's an arbitrary choice though.
@@ -24,6 +25,19 @@ Connectivity matrix
 - Plot the adjacency matrix and degree distribution
 - Calculation of all the metrics used to characterize MSTs: degree, leaf nodes, leaf fraction , max degree, diameter, eccentricity, betweenness centrality, max betweenness centrality, tree hierarchy and degree correlation.
 
+MST metrics
+- PLI index averaged over all the electrodes (I will soon implement average for sub-groups)
+- nodes
+- edges
+- leaf nodes = all the nodes with only 1 edge
+- leaf fraction = leaf nodes/nodes 
+- max degree in the MST = node with the most edges
+- diameter = the longest distance between the distances of any two nodes
+- eccentricity
+- betweenness centrality
+- max betweenness centrality = max value between all the BC values
+- Three hierarchy = nx_th = leaf_n/(2*links*nx_btw_max) [To be checked]
+- Degree correlation
 
 ----------------------------------------------
 Steps for the one subject analysis
