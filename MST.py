@@ -88,6 +88,9 @@ nx_diameter = diameter(T, e=None)
 nx_eccentricity = eccentricity(T, v=None, sp=None)
 # Betweenness centrality (BC) and BCmax
 nx_btw_centrality = betweenness_centrality(T, k=None, normalized=True, weight=None, endpoints=False, seed=None)
+# Applying round to the betweenness centrality to show only the first 3 values
+
+
 nx_btw_max = 0
 for i in range(len(T.edges)):
     val = nx_btw_centrality[i]
@@ -112,6 +115,7 @@ print ('Leaf fraction: ', leaf_fraction)
 print ('Max degree:', max_degree)
 print ('Diameter:', nx_diameter)
 print ('Eccentricity:', nx_eccentricity)
+print ('Betweenness centrality: ', nx_btw_centrality,2)
 print ('Max BC:', nx_btw_max)
 print('Tree hierarchy: ', nx_th)
 print('Degree correlation: ', nx_d)
