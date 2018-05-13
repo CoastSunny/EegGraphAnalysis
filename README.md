@@ -2,7 +2,7 @@
 Graph analysis of resting state eeg data using MNE and Networkx
 
 Resting state data are cleaned and a connectivity matrix is created using the phase lag index (PLI).
-Then, a graph is built and described using classical measures. For unbiased group comparisons an acyclic sub-graph is created joining all the nodes minimizing edge weights (w = 1/w). This sub-graph is named Minimum spanning tree.
+Then, a graph is built and for unbiased group comparisons an acyclic sub-graph is derived joining all the nodes minimizing edge weights (w = 1/w). This sub-graph is named Minimum spanning tree.
 --------------------------------------------------
 Preprocessing
 - Import the data, filter them (the mne filters already use zero-phase filters) at 1-30Hz.
