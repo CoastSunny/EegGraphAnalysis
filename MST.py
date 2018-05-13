@@ -109,6 +109,8 @@ plot_adjacency_matrix(A)
 # We can plot the degree distribution
 plot_degree_distribution(T)
 
+print('Subject: ', title)
+print('Band: ', bands)
 print('Number of nodes: ', len(T.nodes), ' Number of edges: ', len(T.edges))
 print ('Averaged PLI:', mean_connectivity)
 print ('Number of leaf nodes: ', leaf_n)
