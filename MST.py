@@ -33,12 +33,14 @@ for i in range(0,len(pos)):
 #nx.draw(G,pos,node_size=32,node_color='black') #Here we don't consider the threshold
 #nx.draw_networkx_labels(G,label_pos,labels,font_size=7,with_labels=True,font_color='grey')
 #plt.show()
-
 # Network measures
 #centrality = nx.degree_centrality(G)
-
 ##################
 
+# Connectivity strength analysis
+mean_connectivity = np.mean(con)
+# Connectivity strength in a sub-avareage of electrodes (frontal, occipital, temporal and parietal)
+# To be implemented
 
 #Minimum spanning tree
 from networkx.algorithms import tree
@@ -60,10 +62,8 @@ plt.show()
 #We plot the adjacency matrix
 from networkx import adjacency_matrix
 A = nx.adjacency_matrix(T)
-plot_adjacency_matrix(A)
+links = len(T.edges)
 
-# We can plot the degree distribution 
-plot_degree_distribution(T)
 # Metrics list
 # Degree, leaf number, betweenness centrality (BC), eccentricity,
 # diameter, hierarchy (Th), and degree correlation (R).
@@ -74,9 +74,7 @@ for x in range(0,len(T.edges)):
     if len(T.edges(x)) == 1:
         leaf_n += 1
     print(T.edges(x))
-leaf_fraction = leaf_n/n_channels_used #Important values for between subject comparison
-print ('Number of leaf nodes: ', leaf_n)
-print ('Leaf fraction: ', leaf_fraction)
+leaf_fraction = leaf_n/len(T.nodes) #Important values for between subject comparison
 
 #Max degree in the MST
 max_degree = 0
@@ -84,12 +82,36 @@ for i in range(len(T.edges)):
     val = T.degree(i)
     if val > max_degree:
         max_degree = val
-print ('Max degree:', max_degree)
 
 #Diameter and eccentricity
 nx_diameter = diameter(T, e=None)
-print ('Diameter:', nx_diameter)
 nx_eccentricity = eccentricity(T, v=None, sp=None)
-print ('Eccentricity:', nx_eccentricity)
-# Betweenness centrality
+# Betweenness centrality (BC) and BCmax
 nx_btw_centrality = betweenness_centrality(T, k=None, normalized=True, weight=None, endpoints=False, seed=None)
+nx_btw_max = 0
+for i in range(len(T.edges)):
+    val = nx_btw_centrality[i]
+    if val > nx_btw_max:
+        nx_btw_max = val
+
+#Tree hierarchy (Th=L/(2mBCmax))
+nx_th = leaf_n/(2*links*nx_btw_max) #TO BE CHECKED
+
+# Degree correlation
+from networkx import  degree_pearson_correlation_coefficient
+nx_d = degree_pearson_correlation_coefficient(T, weight=None, nodes=None)
+
+#### Printing and plotting all the measures ####
+plot_adjacency_matrix(A)
+# We can plot the degree distribution
+plot_degree_distribution(T)
+
+print('Number of nodes: ', len(T.nodes), ' Number of edges: ', len(T.edges))
+print ('Number of leaf nodes: ', leaf_n)
+print ('Leaf fraction: ', leaf_fraction)
+print ('Max degree:', max_degree)
+print ('Diameter:', nx_diameter)
+print ('Eccentricity:', nx_eccentricity)
+print ('Max BC:', nx_btw_max)
+print('Tree hierarchy: ', nx_th)
+print('Degree correlation: ', nx_d)

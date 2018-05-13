@@ -3,7 +3,7 @@ sbj = "IE008_RC"  # Name of the subject
 raw_folder = 'D:/MATLAB/datos nuevos/resting/P1 IMPORT/EC/'
 clean_folder = 'D:/MATLAB/datos nuevos/resting/P1 IMPORT/EC/clean/' #folder in which we will save raw cleaned data
 epochs_folder = 'D:/MATLAB/datos nuevos/resting/P1 IMPORT/EC/epochs/' #folder in which we will save epochs data
-
+result_folder = 'D:/MATLAB/datos nuevos/resting/P1 IMPORT/EC/results/'
 raw_fname = sbj + "_RESTINGEC"  # Subject name should be followed by EO or EC
 title = 'Subject: ' + raw_fname
 raw_file_ext = '.set'
