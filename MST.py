@@ -104,7 +104,7 @@ nx_th = leaf_n/(2*links*nx_btw_max) #TO BE CHECKED
 from networkx import  degree_pearson_correlation_coefficient
 nx_d = degree_pearson_correlation_coefficient(T, weight=None, nodes=None)
 
-#### Printing and plotting all the measures ####
+#### Printing and plotting all the measures #####
 plot_adjacency_matrix(A)
 # We can plot the degree distribution
 plot_degree_distribution(T)
