@@ -36,7 +36,7 @@ MST metrics
 - eccentricity
 - betweenness centrality
 - max betweenness centrality = max value between all the BC values
-- Three hierarchy = nx_th = leaf_n/(2*links*nx_btw_max) [To be checked]
+- Three hierarchy = nx_th = leaf_n/(2 * links * nx_btw_max) [To be checked]
 - Degree correlation
 
 ----------------------------------------------
