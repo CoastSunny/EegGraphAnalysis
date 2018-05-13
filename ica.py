@@ -25,7 +25,6 @@ eog_inds, scores = ica.find_bads_eog(eog_epochs)  # find via correlation
 ica.plot_scores(scores, exclude=eog_inds)  # look at r scores of components
 
 # After visual and automatic inspection you can remove those components
-ica.exclude += [] # Here you can add the Ica components you found by visual inspection
 ica.exclude.extend(eog_inds) # We exclude components found by automatic artifact detection
 raw_backup = raw.copy() #We create a raw backup
 ica.apply(raw) # We apply ica

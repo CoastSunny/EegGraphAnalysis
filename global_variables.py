@@ -1,5 +1,5 @@
 ### Loading the data ###
-sbj = "IE001_NH"  # Name of the subject
+sbj = "IE009_MM"  # Name of the subject
 raw_folder = 'D:/MATLAB/datos nuevos/resting/P1 IMPORT/EC/'
 clean_folder = 'D:/MATLAB/datos nuevos/resting/P1 IMPORT/EC/clean/' #folder in which we will save raw cleaned data
 epochs_folder = 'D:/MATLAB/datos nuevos/resting/P1 IMPORT/EC/epochs/' #folder in which we will save epochs data
