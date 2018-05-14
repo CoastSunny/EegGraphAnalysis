@@ -2,7 +2,7 @@
 # You can plot the connectivity matrix with this function
 plot_matrix(con,'PLI')
 
-# Plotting the data
+# Creating the graph derived from the matrix
 G=nx.Graph()
 for x in range(0, len(idx)):
 	G.add_node(x,pos=(new_loc[x,0],new_loc[x,1])) #I add the nodes to the graph (positions must be re-referenced)
@@ -44,15 +44,6 @@ mean_connectivity = np.mean(con)
 
 #Minimum spanning tree
 from networkx.algorithms import tree
-#We create new weights for the minimum spanning tree (1/weights)
-new_weights = []
-
-for i in range(0,len(weights)):
-	new_weights.append(1/weights[i]) #Stronger connection will have a shortest distance
-
-new_weights = tuple(new_weights) #convert the list to tuple
-#This part does not show the real MST, I have no idea why. I solved it using the maximum spanning tree
-#T=nx.minimum_spanning_tree(G,new_weights) #Minimum spanning tree
 T = nx.maximum_spanning_tree(G) #This should do extactly the same thing as using w = 1/w as it maximise the distance
 nx.draw(T,pos,node_size=32,node_color='black',edge_color='red')
 nx.draw_networkx_labels(T,label_pos,labels,font_size=7,with_labels=True,font_color='grey')
