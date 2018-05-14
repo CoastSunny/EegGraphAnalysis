@@ -50,14 +50,23 @@ nx.draw_networkx_labels(T,label_pos,labels,font_size=7,with_labels=True,font_col
 plt.show()
 
 # Minimum spanning tree Metrics
+# Metrics list
+# Degree, leaf number, betweenness centrality (BC), eccentricity,
+# diameter, hierarchy (Th), and degree correlation (R).
+degree = np.array(T.degree)
+mean_degree = np.mean(degree[:,1])
+median_degree = np.median(degree[:,1])
+
+#Hubs list:all the nodes with degree > median could be considered as hubs. (Mike X Cohen, Analyzing neural time series data, 2016)
+hubs = np.where( degree[:,1] > median_degree )
+n_hubs = len(hubs[0])
+
 #We plot the adjacency matrix
 from networkx import adjacency_matrix
 A = nx.adjacency_matrix(T)
 links = len(T.edges)
 
-# Metrics list
-# Degree, leaf number, betweenness centrality (BC), eccentricity,
-# diameter, hierarchy (Th), and degree correlation (R).
+#Leaf number and leaf fraction
 from networkx import diameter, eccentricity, betweenness_centrality
 #LEAF node
 leaf_n = 0
@@ -81,7 +90,6 @@ nx_eccentricity = eccentricity(T, v=None, sp=None)
 nx_btw_centrality = betweenness_centrality(T, k=None, normalized=True, weight=None, endpoints=False, seed=None)
 # Applying round to the betweenness centrality to show only the first 3 values
 
-
 nx_btw_max = 0
 for i in range(len(T.edges)):
     val = nx_btw_centrality[i]
@@ -103,6 +111,7 @@ plot_degree_distribution(T)
 print('Subject: ', title)
 print('Band: ', bands)
 print('Number of nodes: ', len(T.nodes), ' Number of edges: ', len(T.edges))
+print ('Number of hubs', n_hubs)
 print ('Averaged PLI:', mean_connectivity)
 print ('Number of leaf nodes: ', leaf_n)
 print ('Leaf fraction: ', leaf_fraction)

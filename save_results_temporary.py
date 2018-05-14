@@ -10,6 +10,8 @@ with open(result_file, 'a') as file:
 	file.write(str(len(T.edges)))
     file.write("\n Average PLI: \n")
 	file.write(str(mean_connectivity))
+    file.write("\n Number of hubs: \n")
+	file.write(str(n_hubs))
     file.write("\n Leaf nodes: \n")
 	file.write(str(leaf_n))
     file.write("\n Leaf fraction: \n")
