@@ -5,8 +5,8 @@ raw = mne.io.read_raw_eeglab(raw_path, eog=["E125", "E126", "E127", "E128"],
                              preload=True)
 
 # Filtering and referencing
-raw.filter(1., None, fir_design='firwin')
-raw.filter(None, 30., fir_design='firwin')
+raw.filter(0.1, None, fir_design='firwin')
+raw.filter(None, 50., fir_design='firwin')
 
 raw.set_eeg_reference('average', projection=False)  # set EEG average reference
 
