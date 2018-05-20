@@ -1,5 +1,5 @@
 ### Loading the data ###
-sbj = "IE004_DM"  # Name of the subject
+sbj = "IE001_NH"  # Name of the subject
 raw_folder = 'D:/MATLAB/datos nuevos/resting/P1 IMPORT/EC/'
 clean_folder = 'D:/MATLAB/datos nuevos/resting/P1 IMPORT/EC/clean/' #folder in which we will save raw cleaned data BEFORE ICA DECOMPOSITION
 ica_folder = 'D:/MATLAB/datos nuevos/resting/P1 IMPORT/EC/ica/' #folder in which we will save raw data AFTER ICA DECOMPOSITION
