@@ -7,6 +7,7 @@ def plot_matrix(con,method):
     clb = plt.colorbar()
     clb.ax.set_title(method)
     plt.xlabel('Channels')
+
     plt.show()
     return
 #####################

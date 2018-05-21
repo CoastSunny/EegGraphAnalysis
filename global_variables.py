@@ -5,6 +5,7 @@ clean_folder = 'D:/MATLAB/datos nuevos/resting/P1 IMPORT/EC/clean/' #folder in w
 ica_folder = 'D:/MATLAB/datos nuevos/resting/P1 IMPORT/EC/ica/' #folder in which we will save raw data AFTER ICA DECOMPOSITION
 epochs_folder = 'D:/MATLAB/datos nuevos/resting/P1 IMPORT/EC/epochs/' #folder in which we will save epochs data
 result_folder = 'D:/MATLAB/datos nuevos/resting/P1 IMPORT/EC/results/'
+results_sbj = os.path.join(result_folder, sbj)
 raw_fname = sbj + "_RESTINGEC"  # Subject name should be followed by EO or EC
 title = 'Subject: ' + raw_fname
 raw_file_ext = '.set'

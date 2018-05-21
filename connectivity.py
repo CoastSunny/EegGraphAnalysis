@@ -6,7 +6,8 @@ theta = 4,8
 beta = 13,30
 fmin, fmax = alpha
 bands = fmin,fmax
-min_epochs = 1 #Start from epoch n.
+band_considered = 'alpha'
+min_epochs = 5 #Start from epoch n.
 max_epochs = 31 #End at epoch n.
 # Get the strongest connections
 n_con = 124*123 # show up to n_con connections THIS SHOULD BE CHECKED.
@@ -41,9 +42,11 @@ ii, jj = np.where(con >= threshold)
 # Remove close connections
 con_nodes = list()
 con_val = list()
+connections_found = 0
 for i, j in zip(ii, jj):
     if linalg.norm(sens_loc[i] - sens_loc[j]) > min_dist:
         con_nodes.append((i, j))
         con_val.append(con[i, j])
+        connections_found = connections_found + 1
 
 con_val = np.array(con_val)

@@ -1,5 +1,7 @@
 # MST metrics and data visualization
 # You can plot the connectivity matrix with this function
+results_band =  os.path.join(result_folder,sbj + '/' + band_considered)
+
 plot_matrix(con,'PLI')
 
 # Creating the graph derived from the matrix

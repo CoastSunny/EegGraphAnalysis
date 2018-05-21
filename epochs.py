@@ -7,5 +7,5 @@ epochs.set_eeg_reference('average', projection=False)  # set EEG average referen
 epochs.save(cleaned_epochs)
 
 #You can plot some information
-epochs.plot_psd(fmin=1., fmax=35.)
+epochs.plot_psd(fmin=1., fmax=40.)
 epochs.plot_psd_topomap(ch_type='eeg', normalize=True)

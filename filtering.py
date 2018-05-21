@@ -14,4 +14,11 @@ raw.set_eeg_reference('average', projection=False)  # set EEG average reference
 raw.plot(color=color, n_channels=n_channels, bad_color=bad_color, title=title)
 
 # Bad channels
-raw.info['bads'] += [] #or do it using the raw.plot function.
+#This can give you an idea of which electrodes could be outliers
+data, times = raw[picks, :]
+picks = mne.pick_types(raw.info, meg=False, eeg=True)
+outliers = is_outlier(data, 3.0);
+#With this function I list all the electrods that are supposed to be outliers
+for x in range(0, len(outliers)):
+	if outliers[x] == 1:
+		print ("Outlier Electrode detected:", x+1)

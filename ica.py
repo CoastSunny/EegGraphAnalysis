@@ -50,5 +50,5 @@ epochs.interpolate_bads(reset_bads=False,verbose=False)  # We interpolate bad ch
 mne.rename_channels(epochs.info,  {'E125' : '_E125','E126':'_E126','E127':'_E127','E128':'_E128'})
 picks = mne.pick_types(raw.info, eeg=True, eog=False, stim=False, include = [], exclude=[]) # We want to select all the eeg channels
 #We save the epochs
-cleaned_epochs= os.path.join(epochs_folder, raw_fname + '-epo.fif')
+cleaned_epochs = os.path.join(epochs_folder, raw_fname + '-epo.fif')
 epochs.save(cleaned_epochs)
