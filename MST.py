@@ -88,8 +88,10 @@ for i in range(len(T.edges)):
 #Diameter and eccentricity
 nx_diameter = diameter(T, e=None)
 nx_eccentricity = eccentricity(T, v=None, sp=None)
+nx_eccentricity_mean = np.mean(nx_eccentricity[:,1]) #whole MST eccentricity
 # Betweenness centrality (BC) and BCmax
 nx_btw_centrality = betweenness_centrality(T, k=None, normalized=True, weight=None, endpoints=False, seed=None)
+nx_btw_centrality_mean = np.mean(nx_btw_centrality[:,1]) 
 # Applying round to the betweenness centrality to show only the first 3 values
 
 nx_btw_max = 0
