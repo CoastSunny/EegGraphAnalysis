@@ -4,6 +4,7 @@ delta = 0.5,4
 alpha = 8,13
 theta = 4,8
 beta = 13,30
+gamma = 30,70
 fmin, fmax = alpha
 bands = fmin,fmax
 band_considered = 'alpha'

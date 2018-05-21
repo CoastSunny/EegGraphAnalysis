@@ -6,8 +6,8 @@ raw = mne.io.read_raw_eeglab(raw_path, eog=["E125", "E126", "E127", "E128"],
 
 # Filtering and referencing
 raw.filter(0.1, None, fir_design='firwin')
-raw.filter(None, 40., fir_design='firwin')
-
+raw.filter(None, 80., fir_design='firwin')
+raw.notch_filter(50)
 raw.set_eeg_reference('average', projection=False)  # set EEG average reference
 
 # Remove bad segments, mark bad channels with visual inspection
