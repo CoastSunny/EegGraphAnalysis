@@ -8,7 +8,7 @@ gamma = 30,70
 fmin, fmax = alpha
 bands = fmin,fmax
 band_considered = 'alpha'
-min_epochs = 5 #Start from epoch n.
+min_epochs = 1 #Start from epoch n.
 max_epochs = 31 #End at epoch n.
 # Get the strongest connections
 n_con = int((n_channels_used*(n_channels_used-1))/2) # max edges in an undirected graph
@@ -49,5 +49,19 @@ for i, j in zip(ii, jj):
         con_nodes.append((i, j))
         con_val.append(con[i, j])
         connections_found = connections_found + 1
-
 con_val = np.array(con_val)
+
+# Connectivity strength analysis
+r_con = con + con.T - np.diag(np.diag(con)) #I reflect the matrix to correctly calculate all the connectivity strength values
+mean_connectivity = round(np.mean(r_con),4)
+picks = mne.pick_types(epochs.info, eeg=True, eog=False, stim=False, selection=left_temporal) #We want to select all the eeg channels
+#I need to fix and finish this part
+for i in range(0,len(picks)):
+     val = r_con[picks[i],picks]
+
+
+
+
+
+# Connectivity strength in a sub-avareage of electrodes (frontal, occipital, temporal and parietal)
+# To be implemented

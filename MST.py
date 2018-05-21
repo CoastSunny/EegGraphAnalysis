@@ -39,11 +39,6 @@ for i in range(0,len(pos)):
 #centrality = nx.degree_centrality(G)
 ##################
 
-# Connectivity strength analysis
-mean_connectivity = np.mean(con)
-# Connectivity strength in a sub-avareage of electrodes (frontal, occipital, temporal and parietal)
-# To be implemented
-
 #Minimum spanning tree
 from networkx.algorithms import tree
 T = nx.maximum_spanning_tree(G) #This should do extactly the same thing as using w = 1/w as it maximise the distance
@@ -91,7 +86,7 @@ nx_eccentricity = eccentricity(T, v=None, sp=None)
 nx_eccentricity_mean = np.mean(nx_eccentricity[:,1]) #whole MST eccentricity
 # Betweenness centrality (BC) and BCmax
 nx_btw_centrality = betweenness_centrality(T, k=None, normalized=True, weight=None, endpoints=False, seed=None)
-nx_btw_centrality_mean = np.mean(nx_btw_centrality[:,1]) 
+nx_btw_centrality_mean = np.mean(nx_btw_centrality[:,1])
 # Applying round to the betweenness centrality to show only the first 3 values
 
 nx_btw_max = 0
