@@ -1,4 +1,4 @@
-cleaned_epochs= os.path.join(epochs_folder, raw_fname + '-epo.fif')
+cleaned_epochs = os.path.join(epochs_folder, raw_fname + '-epo.fif')
 epochs = mne.read_epochs(cleaned_epochs, proj=True, preload=True, verbose=None)
 picks = mne.pick_types(epochs.info, eeg=True, eog=False, stim=False, include = [], exclude=[]) #We want to select all the eeg channels
 epochs.plot()
@@ -7,5 +7,5 @@ epochs.set_eeg_reference('average', projection=False)  # set EEG average referen
 epochs.save(cleaned_epochs)
 
 #You can plot some information
-epochs.plot_psd(fmin=1., fmax=40.)
+epochs.plot_psd(fmin=1., fmax=70.)
 epochs.plot_psd_topomap(ch_type='eeg', normalize=True)
