@@ -6,6 +6,9 @@ mask =  (mask-np.diag(np.ones(n_channels_used))).astype(np.bool)
 r_con = con + con.T - np.diag(np.diag(con)) #I reflect the matrix to correctly calculate all the connectivity strength values
 mean_connectivity = round(np.mean(r_con[mask]),4) #Whole mean connectivity strength
 
+#Alternative
+r_con[r_con == 0] = np.nan
+mean_connectivity = np.nanmean(r_con)
 #THIS HAS TO BE DONE AFTER THE CALCULATION OF THE WHOLE CONNECTIVITY MATRIX
 # Connectivity strength in a sub-avareage of electrodes (frontal, occipital, temporal and parietal)
 lt_picks = mne.epochs.pick_types(epochs_backup.info, eeg=True, eog=False, stim=False, selection=left_temporal) #left_temporal electrodes and so forth
