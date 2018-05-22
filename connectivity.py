@@ -13,8 +13,9 @@ n_epochs_touse = 31
 max_epochs = min_epochs + n_epochs_touse #End at epoch n.
 # Get the strongest connections
 n_con = int((n_channels_used*(n_channels_used-1))/2) # max edges in an undirected graph
-min_dist = 3  # exclude sensors that are less than 4cm apart THIS SHOULD BE CHECKED
+min_dist = 0  # exclude sensors that are less than 4cm apart THIS SHOULD BE CHECKED
 method = 'pli' # Method used to calculate the connectivity matrix
+picks = mne.pick_types(epochs.info, eeg=True, eog=False, stim=False, include = [], exclude=[]) #We want to select all the eeg channels
 
 #Connectivity
 from scipy import linalg

@@ -1,6 +1,10 @@
 # Connectivity strength analysis
+#We create a mask to remove the diagonal from the Count (which is self-correlation)
+mask = np.ones((n_channels_used,n_channels_used))
+mask =  (mask-np.diag(np.ones(n_channels_used))).astype(np.bool)
+
 r_con = con + con.T - np.diag(np.diag(con)) #I reflect the matrix to correctly calculate all the connectivity strength values
-mean_connectivity = round(np.mean(r_con),4) #Whole mean connectivity strength
+mean_connectivity = round(np.mean(r_con[mask]),4) #Whole mean connectivity strength
 
 #THIS HAS TO BE DONE AFTER THE CALCULATION OF THE WHOLE CONNECTIVITY MATRIX
 # Connectivity strength in a sub-avareage of electrodes (frontal, occipital, temporal and parietal)
@@ -15,7 +19,7 @@ rf_picks = mne.epochs.pick_types(epochs_backup.info, eeg=True, eog=False, stim=F
 
 #Now we consider left and right together, joining the each couple of arrays
 t_picks = np.append(lt_picks,rt_picks) #temporal
-f_picks  = np.append(lf_picks,rf_picks) #frontal
+f_picks = np.append(lf_picks,rf_picks) #frontal
 o_picks = np.append(lo_picks,ro_picks) #occipital
 p_picks = np.append(lp_picks,rp_picks) #parietal
 
