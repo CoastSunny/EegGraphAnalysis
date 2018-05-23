@@ -67,15 +67,16 @@ links = len(T.edges)
 from networkx import diameter, eccentricity, betweenness_centrality
 #LEAF node
 leaf_n = 0
-for x in range(0,len(T.edges)):
+for x in range(0,len(T.nodes)):
     if len(T.edges(x)) == 1:
-        leaf_n += 1
+        leaf_n = leaf_n+1
+
     print(T.edges(x))
 leaf_fraction = leaf_n/len(T.nodes) #Important values for between subject comparison
 
 #Max degree in the MST
 max_degree = 0
-for i in range(len(T.edges)):
+for i in range(0,len(T.nodes)):
     val = T.degree(i)
     if val > max_degree:
         max_degree = val
@@ -90,7 +91,7 @@ nx_btw_centrality_mean = np.mean(nx_btw_centrality[:,1])
 # Applying round to the betweenness centrality to show only the first 3 values
 
 nx_btw_max = 0
-for i in range(len(T.edges)):
+for i in range(0,len(T.nodes)):
     val = nx_btw_centrality[i]
     if val > nx_btw_max:
         nx_btw_max = val
