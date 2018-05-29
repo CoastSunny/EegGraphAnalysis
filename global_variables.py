@@ -1,10 +1,10 @@
 ### Loading the data ###
 sbj = "IE001_NH"  # Name of the subject
-raw_folder = 'D:/MATLAB/datos nuevos/resting/P1 IMPORT/EC/'
-clean_folder = 'D:/MATLAB/datos nuevos/resting/P1 IMPORT/EC/clean/' #folder in which we will save raw cleaned data BEFORE ICA DECOMPOSITION
-ica_folder = 'D:/MATLAB/datos nuevos/resting/P1 IMPORT/EC/ica/' #folder in which we will save raw data AFTER ICA DECOMPOSITION
-epochs_folder = 'D:/MATLAB/datos nuevos/resting/P1 IMPORT/EC/epochs/' #folder in which we will save epochs data
-result_folder = 'D:/MATLAB/datos nuevos/resting/P1 IMPORT/EC/results/'
+raw_folder = 'C:/Users/davide/data/MATLAB/datos nuevos/resting/P1 IMPORT/EC/'
+clean_folder = 'C:/Users/davide/data/MATLAB/datos nuevos/resting/P1 IMPORT/EC/clean/' #folder in which we will save raw cleaned data BEFORE ICA DECOMPOSITION
+ica_folder = 'C:/Users/davide/data/MATLAB/datos nuevos/resting/P1 IMPORT/EC/ica/' #folder in which we will save raw data AFTER ICA DECOMPOSITION
+epochs_folder = 'C:/Users/davide/data/MATLAB/datos nuevos/resting/P1 IMPORT/EC/epochs/' #folder in which we will save epochs data
+result_folder = 'C:/Users/davide/data/MATLAB/datos nuevos/resting/P1 IMPORT/EC/results/'
 results_sbj = os.path.join(result_folder, sbj)
 raw_fname = sbj + "_RESTINGEC"  # Subject name should be followed by EO or EC
 title = 'Subject: ' + raw_fname

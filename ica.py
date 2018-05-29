@@ -10,7 +10,7 @@ reject = get_rejection_threshold(epochs, decim=1)
 
 # ICA for eye movements and eye blinks detection
 raw_tmp = raw.copy()
-picks = mne.pick_types(raw_tmp.info, eeg=True, eog=False, stim=False, exclude='bads')
+picks = mne.pick_types(raw_tmp.info, eeg=True, eog=True, stim=False, exclude='bads')
 ica = mne.preprocessing.ICA(method="extended-infomax", random_state=1, n_components = 25)
 ica.fit(raw_tmp, picks=picks, reject=reject)
 ica.plot_components(picks=range(25), inst=raw_tmp) #Visual inspection
