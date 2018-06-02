@@ -47,7 +47,7 @@ plt.show()
 #regular = 20, 4, 0
 #small world = 20, 4, 0.2/0.5
 #random = 20, 4, 1
-G = connected_watts_strogatz_graph(20,4,1,seed=None)
+G = connected_watts_strogatz_graph(20,4,0.2,seed=None)
 cc = nx.clustering(G)
 color_map = []
 for node in G:
@@ -55,8 +55,8 @@ for node in G:
     cc[node] = "          " + str(round(cc[node],2))
 
 pos = nx.circular_layout(G)
-nx.draw(G,pos,node_size=28,node_color='black',edge_color='black') #labels = cc
-plt.show()
+#nx.draw(G,pos,node_size=28,node_color='black',edge_color='black') #labels = cc
+#plt.show()
 
 
 ax=plt.gca()
@@ -64,5 +64,5 @@ draw_network(G,pos,ax,rad=-0.2)
 ax.autoscale()
 plt.axis('equal')
 plt.axis('off')
-#plt.savefig("graph.pdf")
+#plt.savefig("regular.jpg")
 plt.show()
