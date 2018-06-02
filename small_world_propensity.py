@@ -5,13 +5,14 @@ from matplotlib.patches import FancyArrowPatch, Circle
 import numpy as np
 
 from networkx import fast_gnp_random_graph, connected_watts_strogatz_graph
-G_Rand = connected_watts_strogatz_graph(300,4,1,seed=None)
-G_Latt = connected_watts_strogatz_graph(300,4,0,seed=None)
-G_SM = connected_watts_strogatz_graph(300,4,0.05,seed=None)
+n = 124 #number of nodes in the graph
+G_Rand = connected_watts_strogatz_graph(n,5,1,seed=None)
+G_Latt = connected_watts_strogatz_graph(n,5,0,seed=None)
+G_SM = connected_watts_strogatz_graph(n,5,0,seed=None)
 pos = nx.circular_layout(G_Rand)
 
-nx.draw(G_SM,pos,node_size=25,node_color='red',edge_color='black')
-plt.show()
+#nx.draw(G_SM,pos,node_size=2,node_color='black',edge_color='k',width=0.4)
+#plt.show()
 
 from networkx import average_clustering,  average_shortest_path_length
 c_obs = average_clustering(G_SM, nodes=None, weight=None, count_zeros=True)
