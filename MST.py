@@ -13,7 +13,7 @@ pos=nx.get_node_attributes(G,'pos')
 con_nodes_new = np.array(con_nodes)
 
 for x in range(0,len(con_nodes)):
-	G.add_edge(con_nodes_new[x,0],con_nodes_new[x,1], weight=con_val[x],alpha=con_val[x])
+	G.add_edge(con_nodes_new[x,0],con_nodes_new[x,1], weight=1,alpha=1)  # for weighted networks: weight=con_val[x],alpha=con_val[x])  
 
 edges,weights = zip(*nx.get_edge_attributes(G,'weight').items())
 plt.figure(figsize=(5, 5))
