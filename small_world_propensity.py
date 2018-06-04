@@ -8,7 +8,7 @@ from networkx import fast_gnp_random_graph, connected_watts_strogatz_graph
 n = 1000 #number of nodes in the graph
 G_Rand = connected_watts_strogatz_graph(n,5,1,seed=None)
 G_Latt = connected_watts_strogatz_graph(n,5,0,seed=None)
-G_SM = connected_watts_strogatz_graph(n,5,0.08,seed=None)
+G_SM = connected_watts_strogatz_graph(n,5,0.02,seed=None)
 pos = nx.circular_layout(G_Rand)
 
 nx.draw(G_SM,pos,node_size=2,node_color='black',edge_color='k',width=0.4)
