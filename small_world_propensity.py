@@ -39,20 +39,33 @@ import matplotlib.pyplot as plt
 #from matplotlib.patches import FancyArrowPatch, Circle
 import numpy as np
 from networkx import fast_gnp_random_graph, connected_watts_strogatz_graph
+from networkx import connected_component_subgraphs
 
 #We want to create a lattice graph and a random graph with the same n as our network. Because we can have isolated nodes, we exclude them
-G_SM = G #We copy then network
-G.remove_nodes_from(list(nx.isolates(G_SM))) #We remove isolates
+G_SM = G
+pos = nx.circular_layout(G)
+#nx.draw(G,pos,node_size=2,node_color='black',edge_color='k',width=0.4)
+#plt.show()
+G_SM.remove_nodes_from(list(nx.isolates(G_SM)))
+graphs = list(nx.connected_component_subgraphs(G_SM)) #There may be more than 1 subgraph. We select the one with more node
+biggest_dimension = 0
+for i in range(0,len(graphs)):
+    graph_dimension = len(graphs[i].nodes)
+    if graph_dimension > biggest_dimension:
+        biggest_graph = i
+        biggest_dimension = len(graphs[i].nodes)
+
+G_SM = graphs[biggest_graph]
+
 n = len(G_SM.nodes)
 degree = np.array(G_SM.degree)
 mean_degree = np.mean(degree[:,1])
 median_degree = int(np.median(degree[:,1])) #I will use the median as K when building regular and random graphs. BUT THIS IS PROBABLY WRONG
-
-
-G_Rand = connected_watts_strogatz_graph(n,median_degree,1,seed=None)
-G_Latt = connected_watts_strogatz_graph(n,median_degree,0,seed=None)
-pos = nx.circular_layout(G_SM)
-nx.draw(G_SM,pos,node_size=2,node_color='black',edge_color='k',width=0.4)
+k = int(round(mean_degree,0))
+G_Rand = connected_watts_strogatz_graph(n,k,1,seed=None)
+G_Latt = connected_watts_strogatz_graph(n,k,0,seed=None)
+pos = nx.circular_layout(G_Rand)
+nx.draw(G_Rand,pos,node_size=2,node_color='black',edge_color='k',width=0.4)
 plt.show()
 
 from networkx import average_clustering,  average_shortest_path_length
